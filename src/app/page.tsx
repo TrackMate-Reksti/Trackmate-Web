@@ -1,113 +1,242 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+// import "../style.css";
+import { LiaShippingFastSolid } from "react-icons/lia";
+import { FaClipboard, FaWhatsapp } from "react-icons/fa";
+import { BsThermometerHalf } from "react-icons/bs";
+import { WiHumidity } from "react-icons/wi";
+import { useRef, useEffect, useState } from "react";
+// import { supabase } from "../../api/api";
+// import { PostgrestError } from "@supabase/supabase-js";
+// import { useNavigate } from "react-router-dom";
+import Maps from "@/components/Maps";
+import Dropdown from "@/components/Dropdown";
+import { FaMotorcycle } from "react-icons/fa6";
+import { IoChevronForward } from "react-icons/io5";
+
+export default function Track() {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [containerWidth, setContainerWidth] = useState<number>(0);
+  const [containerHeight, setContainerHeight] = useState<number>(0);
+
+  const [dataTransaksi, setDataTransaksi] = useState<any[] | null>([]);
+  const [dataSuhuProduk, setDataSuhuProduk] = useState<any[] | null>([]);
+  const [dataIot, setDataIot] = useState<any[] | null>([]);
+  // const [error, setError] = useState<PostgrestError | null>(null);
+  // const [errorProduk, setErrorProduk] = useState<PostgrestError | null>(null);
+  // const [erroriot, setErroriot] = useState<PostgrestError | null>(null);
+
+  const [suhuIot, setSuhuIot] = useState<number>(0);
+  const [kelembabanIot, setKelembabanIot] = useState<number>(0);
+
+  const [dataTemperature, setDataTemperature] = useState<any[]>([0, 0, 0]);
+  const [dataHumidity, setDataHumidity] = useState<any[]>([0, 0, 0]);
+
+  // useEffect(() => {
+  //   const fetchDataTransaksi = async () => {
+  //     const { data, error } = await supabase.from("transaksi").select("order_number, delivery_no");
+  //     setDataTransaksi(data);
+  //     setError(error);
+  //   };
+
+  //   fetchDataTransaksi();
+  // }, []);
+
+  // useEffect(() => {
+  //   // Check if dataTransaksi has data
+  //   if (dataTransaksi && dataTransaksi.length > 0) {
+  //     // Iterate over each item in dataTransaksi
+  //     dataTransaksi.forEach(async (item) => {
+  //         const { data, error } = await supabase.from("master_produk")
+  //           .select("pengiriman")
+  //           .eq('kode_produk', item.product_code);
+  //         let minMaxTemp = {min: 0, max: 0}
+  //         if( data![0].pengiriman == "03"){
+  //           minMaxTemp = {min: 15, max: 30}
+  //         } else if (data![0].pengiriman == "02-A") {
+  //           minMaxTemp = {min: 15, max: 25}
+  //         } else if (data![0].pengiriman == "02-B") {
+  //           minMaxTemp = {min: 8, max: 15}
+  //         } else if (data![0].pengiriman == "01") {
+  //           minMaxTemp = {min: 2, max: 8}
+  //         }
+  //         // Use the spread operator to append new data to dataSuhuProduk
+  //         if(dataSuhuProduk != null){
+  //           setDataSuhuProduk((prevData) => (prevData ? [...prevData, minMaxTemp] : [minMaxTemp]));
+  //         }
+  //         setErrorProduk(error);
+  //     });
+  //   }
+  // }, [dataTransaksi]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const fetchDataIot = async () => {
+        // const { data, error } = await supabase.from("data_iot").select("suhu, kelembaban").order("id", { ascending: false }).limit(1);
+        setDataIot([1, 2, 3]);
+        // setErroriot(error);
+      };
+
+      fetchDataIot();
+    }, 1000);
+
+    return () => clearInterval(intervalId); //This is important
+  }, [dataTransaksi]);
+
+  // useEffect(() => {
+  // }, [dataIot])
+
+  useEffect(() => {
+    // console.log(dataTransaksi);
+    // console.log(dataSuhuProduk);
+    // {console.log(dataIot)}
+    try {
+      if (dataIot != null && dataIot != undefined) {
+        dataIot.map((item: any) => {
+          setSuhuIot(item.suhu);
+          setKelembabanIot(item.kelembaban);
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    if (dataIot && dataIot[0]) {
+      let highestTemperature = dataTemperature[2];
+      let highestHumidity = dataHumidity[2];
+      let lowestTemperature = dataTemperature[0];
+      let lowestHumidity = dataHumidity[0];
+
+      if (suhuIot > highestTemperature) {
+        highestTemperature = suhuIot;
+      } else if (kelembabanIot > highestHumidity) {
+        highestHumidity = kelembabanIot;
+      } else if (suhuIot < lowestTemperature) {
+        lowestTemperature = suhuIot;
+      } else if (kelembabanIot < lowestHumidity) {
+        lowestHumidity = kelembabanIot;
+      }
+
+      setDataTemperature([lowestTemperature, suhuIot, highestTemperature]);
+      setDataHumidity([lowestHumidity, kelembabanIot, highestHumidity]);
+    }
+  }, [dataTransaksi, dataSuhuProduk, dataIot]);
+
+  useEffect(() => {
+    const updateContainerSize = () => {
+      if (mapContainerRef.current) {
+        setContainerWidth(mapContainerRef.current.offsetWidth);
+        setContainerHeight(mapContainerRef.current.offsetHeight);
+      }
+    };
+
+    // Initial setup
+    updateContainerSize();
+
+    // Event listener for window resize
+    window.addEventListener("resize", updateContainerSize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", updateContainerSize);
+    };
+  }, []);
+
+  const options = dataTransaksi?.map((item: any) => {
+    return {
+      value: item.delivery_no,
+      label: item.delivery_no,
+    };
+  });
+  const optionsOrder = dataTransaksi?.map((item: any) => {
+    return {
+      value: item.order_number,
+      label: item.order_number,
+    };
+  });
+  // [
+  //   { value: "26230000009", label: "26230000009" },
+  //   { value: "26230000010", label: "26230000010" },
+  //   { value: "26230000011", label: "26230000011" },
+  // ];
+
+  // let navigate = useNavigate();
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+    <div className="w-full h-full">
+      <div className="pt-[60px] px-[32px] pb-[32px] w-full h-full flex flex-col gap-5">
+        <div className="text-[24px] w-fit text-purple-secondary flex items-center gap-3 font-bold">
+          <LiaShippingFastSolid />
+          <p className="text-[20px]">Track Order</p>
+        </div>
+        <div className="flex w-full gap-1">
+          <div className="px-[24px] py-[12px] box-shadow rounded-[10px] flex gap-2 items-center border-2 border-purple-ternary bg-[#F6F3FD] relative w-[40%]">
+            <img
+              src="/assets/logo_medicargo.svg"
+              alt=""
+              className="w-36 object-contain absolute -top-3 bg-gradient-to-b from-white from-45% to-[#F6F3FD] to-50% px-1"
             />
-          </a>
+            <div className="w-full text-blue-dark">
+              <div className="flex gap-2 text-[24px] font-semibold items-center">
+                <h1 className="text-[24px] font-normal w-fit">Delivery ID:</h1>
+                {options && (
+                  <Dropdown
+                    placeholder="Search delivery!"
+                    isMulti={false}
+                    tipe="hollow"
+                    options={options}
+                  />
+                )}
+              </div>
+              <div className="flex gap-2 text-[20px] items-center">
+                <h2 className="text-[20px]">Order ID:</h2>
+                {options && (
+                  <Dropdown
+                    placeholder="Search order!"
+                    isMulti={false}
+                    tipe="hollow"
+                    options={optionsOrder}
+                  />
+                )}
+              </div>
+            </div>
+            <div
+              className="text-[40px] text-green-dark"
+              // onClick={() => navigate("https://wa.link/03x4im")}
+            >
+              <FaWhatsapp />
+            </div>
+          </div>
+          <div className="flex w-1/3 gap-1 text-blue-dark">
+            <div className="px-[24px] py-[12px] box-shadow rounded-[10px] flex justify-between items-center border-2 border-purple-ternary bg-[#F6F3FD] relative w-1/2">
+              <div className="flex items-center gap-1 pr-1 absolute -top-3 bg-gradient-to-b from-white from-45% to-[#F6F3FD] to-50% text-purple-primary font-semibold italic text-[20px]">
+                <FaMotorcycle />
+                <p className="text-[16px]">Total vehicle</p>
+              </div>
+              <p className="text-center text-[28px] font-semibold">
+                {dataTemperature[0]}
+              </p>
+            </div>
+            <div className="px-[24px] py-[12px] box-shadow rounded-[10px] flex justify-between items-center border-2 border-purple-ternary bg-[#F6F3FD] relative w-1/2">
+              <div className="flex items-center gap-1 pr-1 absolute -top-3 bg-gradient-to-b from-white from-45% to-[#F6F3FD] to-50% text-purple-primary font-semibold italic">
+                <FaClipboard />
+                <p>Total Report</p>
+              </div>
+              <p className="text-center text-[28px] font-semibold">
+                {dataTemperature[0]}
+              </p>
+              <button className="text-[28px] ">
+                <IoChevronForward />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div
+          id="mapContainer"
+          className="rounded-[10px] grow box-shadow overflow-hidden"
+          ref={mapContainerRef}
+        >
+          <Maps aspectHeight={containerHeight} aspectWidth={containerWidth} />
         </div>
       </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }
