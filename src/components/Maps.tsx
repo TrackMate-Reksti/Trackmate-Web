@@ -14,7 +14,7 @@ import {
 
 const Maps = ({aspectHeight, aspectWidth}:{aspectHeight:number; aspectWidth:number}) => {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCIhUtglT6YFezdl6bj0-ttZhcYiHrC90c",
+    googleMapsApiKey: "AIzaSyBST8wA2mvHqI0K5W_kexraJU2_IwqybRE",
     // libraries: ['routes']
   });
 
