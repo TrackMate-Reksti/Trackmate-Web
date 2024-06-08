@@ -7,10 +7,7 @@ export default function VehicleList() {
     "Nama Pemilik",
     "Nama Kendaraan",
     "Plat Nomor",
-    "Lat",
-    "Long",
     "Location",
-    "Status",
   ];
 
   const DATA_TABLE = [
@@ -19,21 +16,18 @@ export default function VehicleList() {
       deliveryNo: 26230000048,
       cabang: "JK2",
       customerNo: 108443,
-      deliveryStatus: <p className="text-green-light">ONGOING</p>,
     },
     {
       orderNo: 26230000009,
       deliveryNo: 26230000048,
       cabang: "JK2",
       customerNo: 108443,
-      deliveryStatus: <p className="text-orange-secondary">WAITING</p>,
     },
     {
       orderNo: 26230000009,
       deliveryNo: 26230000048,
       cabang: "JK2",
       customerNo: 108443,
-      deliveryStatus: <p className="text-mono-600">UNASSIGNED</p>,
     },
   ];
 
