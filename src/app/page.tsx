@@ -12,7 +12,7 @@ import { useRef, useEffect, useState } from "react";
 import Maps from "@/components/Maps";
 import Dropdown from "@/components/Dropdown";
 import { FaMotorcycle } from "react-icons/fa6";
-import { IoChevronForward } from "react-icons/io5";
+import { IoChevronForward, IoHomeOutline } from "react-icons/io5";
 
 export default function Track() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -164,29 +164,29 @@ export default function Track() {
     <div className="w-full h-full">
       <div className="pt-[60px] px-[32px] pb-[32px] w-full h-full flex flex-col gap-5">
         <div className="text-[24px] w-fit text-purple-secondary flex items-center gap-3 font-bold">
-          <LiaShippingFastSolid />
-          <p className="text-[20px]">Track Order</p>
+          <IoHomeOutline />
+          <p className="text-[20px]">Home</p>
         </div>
         <div className="flex w-full gap-1">
-          <div className="px-[24px] py-[12px] box-shadow rounded-[10px] flex gap-2 items-center border-2 border-purple-ternary bg-[#F6F3FD] relative w-[40%]">
+          <div className="px-[24px] py-[12px] box-shadow rounded-[10px] flex gap-2 items-center border-2 border-blue-primary bg-[#F6F3FD] relative grow">
             <img
               src="/assets/logo_medicargo.svg"
               alt=""
-              className="w-36 object-contain absolute -top-3 bg-gradient-to-b from-white from-45% to-[#F6F3FD] to-50% px-1"
+              className="w-36 object-contain absolute -top-3 left-4 bg-gradient-to-b from-white from-45% to-[#F6F3FD] to-50% px-1"
             />
             <div className="w-full text-blue-dark">
               <div className="flex gap-2 text-[24px] font-semibold items-center">
-                <h1 className="text-[24px] font-normal w-fit">Delivery ID:</h1>
+                <h1 className="text-[24px] font-normal w-fit shrink-0">License Plate:</h1>
                 {options && (
                   <Dropdown
-                    placeholder="Search delivery!"
+                    placeholder="Search License Plate!"
                     isMulti={false}
                     tipe="hollow"
                     options={options}
                   />
                 )}
               </div>
-              <div className="flex gap-2 text-[20px] items-center">
+              {/* <div className="flex gap-2 text-[20px] items-center">
                 <h2 className="text-[20px]">Order ID:</h2>
                 {options && (
                   <Dropdown
@@ -196,18 +196,12 @@ export default function Track() {
                     options={optionsOrder}
                   />
                 )}
-              </div>
-            </div>
-            <div
-              className="text-[40px] text-green-dark"
-              // onClick={() => navigate("https://wa.link/03x4im")}
-            >
-              <FaWhatsapp />
+              </div> */}
             </div>
           </div>
-          <div className="flex w-1/3 gap-1 text-blue-dark">
-            <div className="px-[24px] py-[12px] box-shadow rounded-[10px] flex justify-between items-center border-2 border-purple-ternary bg-[#F6F3FD] relative w-1/2">
-              <div className="flex items-center gap-1 pr-1 absolute -top-3 bg-gradient-to-b from-white from-45% to-[#F6F3FD] to-50% text-purple-primary font-semibold italic text-[20px]">
+          <div className="flex w-fit gap-1 text-blue-dark shrink-0">
+            <div className="px-[24px] py-[12px] box-shadow rounded-[10px] flex justify-center items-center border-2 border-blue-primary bg-[#F6F3FD] relative w-[120px] box-content">
+              <div className="flex items-center gap-1 pr-1 absolute -top-3 left-4 bg-gradient-to-b from-white from-45% to-[#F6F3FD] to-50% text-purple-primary font-semibold italic text-[20px]">
                 <FaMotorcycle />
                 <p className="text-[16px]">Total vehicle</p>
               </div>
@@ -215,15 +209,15 @@ export default function Track() {
                 {dataTemperature[0]}
               </p>
             </div>
-            <div className="px-[24px] py-[12px] box-shadow rounded-[10px] flex justify-between items-center border-2 border-purple-ternary bg-[#F6F3FD] relative w-1/2">
-              <div className="flex items-center gap-1 pr-1 absolute -top-3 bg-gradient-to-b from-white from-45% to-[#F6F3FD] to-50% text-purple-primary font-semibold italic">
+            <div className="px-[24px] py-[12px] box-shadow rounded-[10px] flex justify-center items-center border-2 border-blue-primary bg-[#F6F3FD] relative w-[120px] box-content">
+              <div className="flex items-center gap-1 pr-1 absolute -top-3 left-4 bg-gradient-to-b from-white from-45% to-[#F6F3FD] to-50% text-purple-primary font-semibold italic">
                 <FaClipboard />
                 <p>Total Report</p>
               </div>
               <p className="text-center text-[28px] font-semibold">
                 {dataTemperature[0]}
               </p>
-              <button className="text-[28px] ">
+              <button className="absolute top-0 bottom-0 right-0 my-auto mr-[24px] text-[28px] ">
                 <IoChevronForward />
               </button>
             </div>
