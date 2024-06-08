@@ -3,11 +3,12 @@
 import { ReactNode, useContext, useEffect, useRef, useState } from "react";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { CiCalendar } from "react-icons/ci";
-import { IoIosLogOut } from "react-icons/io";
+import { IoIosList, IoIosLogOut } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEventListener } from "usehooks-ts";
+import { IoHomeOutline } from "react-icons/io5";
 // import { UserContext } from "@/lib/context/user-context";
 // import { toastError, toastSuccess } from "./toast";
 // import Cookies from "js-cookie";
@@ -43,17 +44,6 @@ export default function NavbarAdmin({ children }: NavbarProps) {
   const documentRef = useRef<Document | null>(
     typeof document !== "undefined" ? document : null
   );
-  const onClickAccount = (event: Event) => {
-    let cekAccount = true;
-    const doc = document.getElementsByClassName("account-detail");
-    for (let index = 0; index < doc.length; index++) {
-      cekAccount = cekAccount && event.target != doc[index];
-    }
-    if (cekAccount) {
-      setAccount(false);
-    }
-  };
-  useEventListener("click", onClickAccount, documentRef);
   const onClickHamburger = (event: Event) => {
     let cekHamburger = true;
     const doc = document.getElementsByClassName("hamburger");
@@ -157,7 +147,7 @@ export default function NavbarAdmin({ children }: NavbarProps) {
                   : "text-white"
               } w-full font-medium text-[20px] lg:text-[24px] pl-[32px] lg:pl-[48px] py-4 hover:text-yellow-accent active:text-yellow-primary hover:border-yellow-accent active:border-yellow-primary flex items-center gap-4 cursor-pointer`}
             >
-              <LuLayoutDashboard />
+              <IoHomeOutline />
               <p className="text-[16px] lg:text-[20px]">Home</p>
             </Link>
             <Link
@@ -168,7 +158,7 @@ export default function NavbarAdmin({ children }: NavbarProps) {
                   : "text-white"
               } w-full font-medium text-[20px] lg:text-[24px] pl-[32px] lg:pl-[48px] py-4 hover:text-yellow-accent active:text-yellow-primary hover:border-yellow-accent active:border-yellow-primary flex items-center gap-4 cursor-pointer`}
             >
-              <CiCalendar />
+              <IoIosList />
               <p className="text-[16px] lg:text-[20px]">Vehicle List</p>
             </Link>
             <Link
