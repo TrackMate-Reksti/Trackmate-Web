@@ -124,7 +124,7 @@ export default function NavbarAdmin({ children }: NavbarProps) {
           ></span>
         </button>
         <img
-          src={"/assets/logo_white.svg"}
+          src={"/assets/logo.png"}
           alt="Carport"
           className={`${navOpen ? "hidden" : "block"} mx-auto lg:mx-0 w-[40%] max-w-fit object-contain`}
         />
@@ -134,7 +134,7 @@ export default function NavbarAdmin({ children }: NavbarProps) {
       >
         <div className="flex flex-col gap-[24px]">
           <img
-            src="/assets/logo_white.svg"
+            src="/assets/logo.png"
             alt="Logo Carport"
             className="mx-auto w-[60%] lg:w-fit object-contain mb-12 lg:mb-[76px]"
           />
