@@ -19,7 +19,7 @@ interface NavbarProps {
 
 export default function NavbarAdmin({ children }: NavbarProps) {
   const router = useRouter();
-//   const context = useContext(UserContext);
+  //   const context = useContext(UserContext);
 
   const [navOpen, setNavOpen] = useState(false);
   const [stickyClass, setStickyClass] = useState("absolute bg-blue-primary");
@@ -56,23 +56,23 @@ export default function NavbarAdmin({ children }: NavbarProps) {
   };
   useEventListener("click", onClickHamburger, documentRef);
 
-//   const handleLogout = async () => {
-//     setIsLoading(true);
-//     try {
-//       if (context.token) {
-//         // const response = await PostWithCredentials("auth/logout", context.token);
-//         // console.log(response);
-//         Cookies.remove("Authorization");
-//         context.updateUserandToken(null, null);
-//         toastSuccess("User logged out successfully");
-//         router.push("/");
-//       }
-//     } catch (error) {
-//       toastError((error as any).response?.data?.error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
+  //   const handleLogout = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       if (context.token) {
+  //         // const response = await PostWithCredentials("auth/logout", context.token);
+  //         // console.log(response);
+  //         Cookies.remove("Authorization");
+  //         context.updateUserandToken(null, null);
+  //         toastSuccess("User logged out successfully");
+  //         router.push("/");
+  //       }
+  //     } catch (error) {
+  //       toastError((error as any).response?.data?.error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
   const stickNavbar = () => {
     const header = document.querySelector("nav");
@@ -94,7 +94,9 @@ export default function NavbarAdmin({ children }: NavbarProps) {
   return (
     <div className="lg:flex w-screen min-h-screen lg:h-screen overflow-hidden relative">
       <div
-        className={`${navOpen ? "fixed bg-blue-primary" : stickyClass} z-50 flex h-[80px] lg:hidden w-full items-center px-4 lg:px-14`}
+        className={`${
+          navOpen ? "fixed bg-blue-primary" : stickyClass
+        } z-50 flex h-[80px] lg:hidden w-full items-center px-4 lg:px-14`}
       >
         <button
           type="button"
@@ -126,17 +128,21 @@ export default function NavbarAdmin({ children }: NavbarProps) {
         <img
           src={"/assets/logo.png"}
           alt="Carport"
-          className={`${navOpen ? "hidden" : "block"} mx-auto lg:mx-0 w-[40%] max-w-fit object-contain`}
+          className={`${
+            navOpen ? "hidden" : "block"
+          } mx-auto lg:mx-0 w-[40%] max-w-fit object-contain`}
         />
       </div>
       <nav
-        className={`${navOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"} z-40 ease-in-out duration-300 fixed lg:static font-poppins bg-blue-primary pt-[120px] lg:pt-[40px] pb-[80px] flex flex-col justify-between w-56 lg:w-[252px] lg:min-w-[252px] shadow-navbar h-screen`}
+        className={`${
+          navOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        } z-40 ease-in-out duration-300 fixed lg:static font-poppins bg-blue-primary pt-[120px] lg:pt-[40px] pb-[80px] flex flex-col justify-between w-56 lg:w-[252px] lg:min-w-[252px] shadow-navbar h-screen`}
       >
         <div className="flex flex-col gap-[24px]">
           <img
             src="/assets/logo.png"
             alt="Logo Carport"
-            className="mx-auto w-[60%] lg:w-fit object-contain mb-12 lg:mb-[76px]"
+            className="mx-auto w-[40%] lg:w-[60%] object-contain mb-12 lg:mb-[64px]"
           />
           <div className="flex flex-col gap-[16px]">
             <Link
@@ -159,7 +165,7 @@ export default function NavbarAdmin({ children }: NavbarProps) {
               } w-full font-medium text-[20px] lg:text-[24px] pl-[32px] lg:pl-[48px] py-4 hover:text-yellow-accent active:text-yellow-primary hover:border-yellow-accent active:border-yellow-primary flex items-center gap-4 cursor-pointer`}
             >
               <IoIosList />
-              <p className="text-[16px] lg:text-[20px]">Vehicle List</p>
+              <p className="text-[16px] lg:text-[20px]">Vehicle Report</p>
             </Link>
             <Link
               href="/profile"
@@ -175,7 +181,7 @@ export default function NavbarAdmin({ children }: NavbarProps) {
           </div>
         </div>
         <button
-        //   onClick={handleLogout}
+          //   onClick={handleLogout}
           className="text-white text-[20px] lg:text-[24px] pl-[32px] lg:pl-[48px] py-4 text-error flex items-center gap-4 cursor-pointer hover:text-red-primary"
         >
           <IoIosLogOut />
@@ -183,7 +189,9 @@ export default function NavbarAdmin({ children }: NavbarProps) {
         </button>
       </nav>
       <div
-        className={`${navOpen ? "block lg:hidden" : "hidden"} fixed z-10 bg-blue-primary h-screen w-full opacity-50`}
+        className={`${
+          navOpen ? "block lg:hidden" : "hidden"
+        } fixed z-10 bg-blue-primary h-screen w-full opacity-50`}
       ></div>
       <div className="w-full lg:w-auto lg:grow lg:overflow-auto">
         {children}
