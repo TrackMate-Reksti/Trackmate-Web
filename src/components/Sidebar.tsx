@@ -167,26 +167,8 @@ export default function NavbarAdmin({ children }: NavbarProps) {
               <IoIosList />
               <p className="text-[16px] lg:text-[20px]">Vehicle Report</p>
             </Link>
-            <Link
-              href="/profile"
-              className={`${
-                active == 2
-                  ? "border-r-4 border-yellow-primary text-yellow-primary box-border"
-                  : "text-white"
-              } w-full font-medium text-[20px] lg:text-[24px] pl-[32px] lg:pl-[48px] py-4 hover:text-yellow-accent active:text-yellow-primary hover:border-yellow-accent active:border-yellow-primary flex items-center gap-4 cursor-pointer`}
-            >
-              <CiUser />
-              <p className="text-[16px] lg:text-[20px]">Profile</p>
-            </Link>
           </div>
         </div>
-        <button
-          //   onClick={handleLogout}
-          className="text-white text-[20px] lg:text-[24px] pl-[32px] lg:pl-[48px] py-4 text-error flex items-center gap-4 cursor-pointer hover:text-red-primary"
-        >
-          <IoIosLogOut />
-          <p className="text-[16px] lg:text-[20px] font-medium">Logout</p>
-        </button>
       </nav>
       <div
         className={`${
