@@ -12,70 +12,13 @@ import { FaMotorcycle } from "react-icons/fa6";
 import { IoChevronForward, IoHomeOutline } from "react-icons/io5";
 import DATA_TABLE from "@/lib/table";
 import Link from "next/link";
+import { GetVehicles } from "@/services/data";
 
 export default function Track() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
   const [containerHeight, setContainerHeight] = useState<number>(0);
-  const [dataTransaksi, setDataTransaksi] = useState<any[] | null>([]);
-  const [dataSuhuProduk, setDataSuhuProduk] = useState<any[] | null>([]);
-  const [dataIot, setDataIot] = useState<any[] | null>([]);
-  const [suhuIot, setSuhuIot] = useState<number>(0);
-  const [kelembabanIot, setKelembabanIot] = useState<number>(0);
-  const [dataTemperature, setDataTemperature] = useState<any[]>([0, 0, 0]);
-  const [dataHumidity, setDataHumidity] = useState<any[]>([0, 0, 0]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const fetchDataIot = async () => {
-        // const { data, error } = await supabase.from("data_iot").select("suhu, kelembaban").order("id", { ascending: false }).limit(1);
-        setDataIot([1, 2, 3]);
-        // setErroriot(error);
-      };
-
-      fetchDataIot();
-    }, 1000);
-
-    return () => clearInterval(intervalId); //This is important
-  }, [dataTransaksi]);
-
-  // useEffect(() => {
-  // }, [dataIot])
-
-  useEffect(() => {
-    // console.log(dataTransaksi);
-    // console.log(dataSuhuProduk);
-    // {console.log(dataIot)}
-    try {
-      if (dataIot != null && dataIot != undefined) {
-        dataIot.map((item: any) => {
-          setSuhuIot(item.suhu);
-          setKelembabanIot(item.kelembaban);
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-    if (dataIot && dataIot[0]) {
-      let highestTemperature = dataTemperature[2];
-      let highestHumidity = dataHumidity[2];
-      let lowestTemperature = dataTemperature[0];
-      let lowestHumidity = dataHumidity[0];
-
-      if (suhuIot > highestTemperature) {
-        highestTemperature = suhuIot;
-      } else if (kelembabanIot > highestHumidity) {
-        highestHumidity = kelembabanIot;
-      } else if (suhuIot < lowestTemperature) {
-        lowestTemperature = suhuIot;
-      } else if (kelembabanIot < lowestHumidity) {
-        lowestHumidity = kelembabanIot;
-      }
-
-      setDataTemperature([lowestTemperature, suhuIot, highestTemperature]);
-      setDataHumidity([lowestHumidity, kelembabanIot, highestHumidity]);
-    }
-  }, [dataTransaksi, dataSuhuProduk, dataIot]);
+  const { vehicles } = GetVehicles()
 
   useEffect(() => {
     const updateContainerSize = () => {
@@ -97,16 +40,10 @@ export default function Track() {
     };
   }, []);
 
-  const options = dataTransaksi?.map((item: any) => {
+  const options = vehicles?.map((item: any) => {
     return {
-      value: item.delivery_no,
-      label: item.delivery_no,
-    };
-  });
-  const optionsOrder = dataTransaksi?.map((item: any) => {
-    return {
-      value: item.order_number,
-      label: item.order_number,
+      value: item.plat_number,
+      label: item.plat_number,
     };
   });
 
@@ -138,17 +75,6 @@ export default function Track() {
                   />
                 )}
               </div>
-              {/* <div className="flex gap-2 text-[20px] items-center">
-                <h2 className="text-[20px]">Order ID:</h2>
-                {options && (
-                  <Dropdown
-                    placeholder="Search order!"
-                    isMulti={false}
-                    tipe="hollow"
-                    options={optionsOrder}
-                  />
-                )}
-              </div> */}
             </div>
           </div>
           <div className="flex w-fit gap-1 text-blue-dark shrink-0">
